@@ -3,7 +3,7 @@ const AutoIncrementModel = require('./AutoIncrement');
 
 const todosSchema = new Schema({
     _id: Number,
-    description: String,
+    task: String,
     isDone: Boolean
 });
 

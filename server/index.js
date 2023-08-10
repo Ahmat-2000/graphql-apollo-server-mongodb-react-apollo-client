@@ -11,6 +11,18 @@ const MONGODB_URL = "mongodb+srv://louky:louky6848@cluster0.ugte8xg.mongodb.net/
 const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
+    context: ({ req }) => {
+        const token = req.headers.authorization || '';
+        let userId;
+    
+        try {
+          userId = jwt.verify(token, JWT_SECRET).userId;
+        } catch (error) {
+          userId = null;
+        }
+    
+        return { userId };
+    }
 });
 
 // connect to mongodb and start the apolloServer

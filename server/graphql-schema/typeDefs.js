@@ -11,26 +11,52 @@ const typeDefs = `#graphql
     email: String!
     password: String!
     age: Int!
+    token: String
   }
   input userInput{
-    firstName: String!
-    lastName: String!
-    email: String!
-    password: String!
-    age: Int = 18 # by default age is 18
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    age: Int
+  }
+  # Todos
+  type Todos{
+    _id: Int!
+    task: String!
+    isDone: Boolean!
+  }
+  input todosInput{
+    task: String!
+    isDone: Boolean = false
   }
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "users" query returns an array of zero or more users (defined above).
   type Query {
-    users: [User!]
-    userByName(name: String!): User
+    # Users queries
+    getAllUsers: [User!]
+    getUserByName(name: String!): User
+
+    # Todos queries
+    getAllTodos: [Todos!]
+    getTodosByIsDone(isDone: Boolean!): [Todos!]
   }
 
   type Mutation {
-    createUser(userToAdd: userInput!): User!
-    deleteUser(userId: ID!): Boolean
-    editUser(userId: ID!, userInput: userInput): Boolean
+
+    # mutations for users
+    deleteUser(userId: ID!): Boolean!
+    updateUser(userId: ID!, userInput: userInput!): Boolean
+
+    # authotentification
+    sinUp(user: userInput!): User!    #It's called when a user sinUp
+    login(email: String!, password: String!): User!
+
+    # mutations for todos
+    addTodos(todosInput: todosInput!): [Todos]
+    deleteTodosById(todosId: ID!): Boolean!
+    updateTodos(todosId: ID!): Boolean!
   } 
 `;
 
